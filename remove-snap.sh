@@ -35,6 +35,8 @@ echo "Desinstalando snapd..."
 sudo apt purge -y snapd
 sudo apt-mark hold snapd
 
+sudo apt autoremove -y
+
 echo "Limpiando mugre (carpetas de snap)..."
 # Tidy up dirs
 rm -rf ~/snap
@@ -75,9 +77,9 @@ echo "1- Como flatpak desde Flathub "
 echo "2- Desde repositorio PPA de Mozilla Team - https://launchpad.net/~mozillateam/+archive/ubuntu/ppa"
 echo " "
 read -r -p "¿Desde donde desea hacer la instalación? (1/2/n - No instalar Firefox) " option
-    if ["${option}" = "1"]; then
+    if [[ "${option}" == "1" ]]; then
         install_firefox_flatpak
-    elif ["${option}" = "2"]; then
+    elif [[ "${option}" == "2" ]]; then
         install_firefox_ppa
     else
         echo "No se instalará firefox"
@@ -104,7 +106,7 @@ echo "Agregando repositorio PPA"
     sudo apt update
 echo "instalando Firefox desde PPA"
     sleep 2
-    sudo apt install -t 'o=LP-PPA-mozillateam' firefox
+    sudo apt install -t 'o=LP-PPA-mozillateam' firefox -y
 
 #evitar que se instale nuevamente snap al momento de instalar o actualizar firefox
 cat << EOF > mozillateamppa.pref
