@@ -109,14 +109,14 @@ echo "instalando Firefox desde PPA"
     sudo apt install -t 'o=LP-PPA-mozillateam' firefox -y
 
 #evitar que se instale nuevamente snap al momento de instalar o actualizar firefox
-cat << EOF > mozillateamppa.pref
+sudo cat << EOF > /etc/apt/preferences.d/mozillateamppa.pref
 Package: firefox*
 Pin: release o=LP-PPA-mozillateam
 Pin-Priority: 501
 EOF
 
-sudo mv no-snap.pref /etc/apt/preferences.d/
-sudo chown root:root /etc/apt/preferences.d/mozillateamppa.pref
+#sudo mv no-snap.pref /etc/apt/preferences.d/
+#sudo chown root:root /etc/apt/preferences.d/mozillateamppa.pref
 }
 
 #crear opcion para instalar la tienda de gnome
