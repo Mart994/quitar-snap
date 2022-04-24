@@ -21,8 +21,7 @@ echo ""
 
 disable_snap() {
 
-
-  read -r -p "¿Desabilitar y quitar snap del sistema? (y/n) " disable_snap
+read -r -p "¿Desabilitar y quitar snap del sistema? (y/n) " disable_snap
 	  if [ "${disable_snap}" = "y" ]; then
 
 echo "Deteniendo daemon..."
@@ -40,26 +39,26 @@ sudo apt autoremove -y
 echo "Limpiando mugre (carpetas de snap)..."
 # Tidy up dirs
 rm -rf ~/snap
+sudo rm -rf /root/snap
 sudo rm -rf /snap /var/snap /var/lib/snapd /var/cache/snapd /usr/lib/snapd
 
 echo "Ahora evitaré la reinstalación de snaps futuros..."
 # Stop it from being reinstalled by 'mistake' when installing other packages
-cat << EOF > no-snap.pref
+sudo cat << EOF > /etc/apt/preferences.d/no-snap.pref
 Package: snapd
 Pin: release a=*
 Pin-Priority: -10
 EOF
 
-sudo mv no-snap.pref /etc/apt/preferences.d/
 sudo chown root:root /etc/apt/preferences.d/no-snap.pref
 
-    
   fi
 }
 
+
 install_flatpak() {
 
-  read -r -p "¿Instalo Flatpak y agrego el repositorio de Flathub? (y/n) " install_flatpak
+read -r -p "¿Instalo Flatpak y agrego el repositorio de Flathub? (y/n) " install_flatpak
 	  if [ "${install_flatpak}" = "y" ]; then
 
         sudo apt update
@@ -69,6 +68,7 @@ install_flatpak() {
         sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     fi
 }
+
 
 install_firefox() {
 echo "Existe la posibilidad de instalar Firefox de dos maneras "
@@ -86,9 +86,10 @@ read -r -p "¿Desde donde desea hacer la instalación? (1/2/n - No instalar Fire
     fi
 }
 
+
 install_firefox_flatpak() {
 
-  flatpak install flathub org.mozilla.firefox
+flatpak install flathub org.mozilla.firefox
 
 echo " To run Firefox from Terminal type the following: "
 echo " "
@@ -98,6 +99,7 @@ echo " Restart session if Firefox doesn't appear in Applications menu "
 echo " "
 
 }
+
 
 install_firefox_ppa() {
 echo "Agregando repositorio PPA"
@@ -116,8 +118,9 @@ Pin-Priority: 501
 EOF
 
 #sudo mv no-snap.pref /etc/apt/preferences.d/
-#sudo chown root:root /etc/apt/preferences.d/mozillateamppa.pref
+sudo chown root:root /etc/apt/preferences.d/mozillateamppa.pref
 }
+
 
 #crear opcion para instalar la tienda de gnome
 install_gnome_Software() {
@@ -130,23 +133,25 @@ read -r -p "Instalo Synaptic?? (y/n) " r
   fi
 }
 
+
 ending() {
   ## Reboot
-  echo ""
-   echo " https://github.com/Mart994/quitar-snap"
-   echo ""
-   echo "Hemos terminado"
-    echo ""
-       echo ""
-  read -r -p "Es recomendable reiniciar el sistema, ¿reiniciar ahora? (y/n) " reboot
+echo ""
+echo " https://github.com/Mart994/quitar-snap"
+echo ""
+echo "Hemos terminado"
+echo ""
+echo ""
+read -r -p "Es recomendable reiniciar el sistema, ¿reiniciar ahora? (y/n) " reboot
   if [ "${reboot}" = "y" ]; then
     reboot
     
   fi
 }
 
+clear
 echo ""
-echo "22.04 Disable Snap & Install Flatpak & Firefox Script"
+echo "22.04 Disable Snap & Install Flatpak/PPA & Firefox Script"
 echo ""
 cat << "EOF"
                .-.
@@ -184,7 +189,11 @@ elif ! [ "${start}" = "y" ]; then
 fi
 
 disable_snap
+clear
 install_flatpak
+clear
 install_firefox
+clear
 install_gnome_Software
+clear
 ending 
